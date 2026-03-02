@@ -1,0 +1,500 @@
+/* ── Fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap');
+
+/* ── Reset & tokens ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #070A12;
+    --surface: #0D1120;
+    --surface2: #111827;
+    --border: #1E293B;
+    --border-hi: #2DD4BF33;
+
+    --green: #7CFF6B;
+    --cyan: #5EEBFF;
+    --magenta: #FF2D78;
+    --yellow: #FFD600;
+    --red: #FF3A3A;
+
+    --text: #D7FFF1;
+    --text-dim: #5E7A8A;
+    --text-muted: #3A4A5A;
+
+    --font-mono: 'Share Tech Mono', ui-monospace, monospace;
+    --font-ui: 'Rajdhani', sans-serif;
+
+    --glow-green: 0 0 8px #7CFF6B88, 0 0 20px #7CFF6B33;
+    --glow-cyan: 0 0 8px #5EEBFF88, 0 0 20px #5EEBFF33;
+    --glow-mg: 0 0 8px #FF2D7888, 0 0 20px #FF2D7833;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html,
+body,
+#root {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    overflow: hidden;
+}
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    gap: 12px;
+    padding: 0 12px 12px;
+    overflow: hidden;
+}
+
+
+/* ── Background grid ─────────────────────────────────────────── */
+.bgGrid {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-image:
+        linear-gradient(rgba(94, 235, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(94, 235, 255, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+}
+
+.vignette {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(7, 10, 18, 0.92) 100%);
+    pointer-events: none;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────── */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0D1627 0%, var(--bg) 100%);
+    flex-shrink: 0;
+}
+
+/* ── Brand ───────────────────────────────────────────────────── */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.logoGlow {
+    width: 10px;
+    height: 42px;
+    background: var(--green);
+    border-radius: 2px;
+    box-shadow: var(--glow-green);
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.brandTitle {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--green);
+    text-shadow: var(--glow-green);
+}
+
+.brandSub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* ── Connection targets ──────────────────────────────────────── */
+.targets {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    flex: 1;
+}
+
+.targets label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.targets label span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.targets input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 5px 10px;
+    width: 160px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.targets input::placeholder {
+    color: var(--text-muted);
+}
+
+.targets input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 2px rgba(94, 235, 255, 0.12);
+}
+
+/* ── Connect button ──────────────────────────────────────────── */
+.connectBtn {
+    align-self: flex-end;
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 3px;
+    padding: 6px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.connectBtn:hover {
+    background: rgba(124, 255, 107, 0.1);
+    box-shadow: var(--glow-green);
+}
+
+.connectBtn:active {
+    transform: scale(0.97);
+}
+
+/* ── Status pills ─────────────────────────────────────────────── */
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.status.ok {
+    color: var(--green);
+    border-color: rgba(124, 255, 107, 0.3);
+}
+
+.status.warn {
+    color: var(--yellow);
+    border-color: rgba(255, 214, 0, 0.3);
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 6px currentColor;
+    animation: blink 1.6s step-start infinite;
+}
+
+.status.warn .dot {
+    animation: none;
+    opacity: 0.7;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.25;
+    }
+}
+
+/* ── Cards ───────────────────────────────────────────────────── */
+.terminalCard,
+.metricCard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.terminalCard {
+    flex: 1;
+    min-width: 0;
+}
+
+.metricCard {
+    margin-bottom: 12px;
+}
+
+.metricCard.small {
+    margin-bottom: 0;
+}
+
+.side {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* ── Card header ─────────────────────────────────────────────── */
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    flex-shrink: 0;
+}
+
+.hdrLeft {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+}
+
+.hdrRight {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+}
+
+/* ── Terminal ─────────────────────────────────────────────────── */
+.terminalWrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: #070A12;
+}
+
+.terminal {
+    position: absolute;
+    inset: 0;
+    padding: 6px;
+}
+
+/* xterm overrides */
+.terminal .xterm {
+    height: 100%;
+}
+
+.terminal .xterm-viewport {
+    border-radius: 0;
+}
+
+/* ── Scanlines ────────────────────────────────────────────────── */
+.scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.18) 2px,
+            rgba(0, 0, 0, 0.18) 4px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ── Metric grid ─────────────────────────────────────────────── */
+.metricGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-top: 1px solid var(--border);
+}
+
+.metric {
+    background: var(--surface);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.metric.span2 {
+    grid-column: span 2;
+}
+
+.metric .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.metric .v {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+}
+
+/* ── Divider ──────────────────────────────────────────────────── */
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+}
+
+/* ── Hint ─────────────────────────────────────────────────────── */
+.hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    line-height: 1.5;
+}
+
+/* ── Pills ────────────────────────────────────────────────────── */
+.pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border-hi);
+    color: var(--cyan);
+    background: rgba(94, 235, 255, 0.06);
+    margin-left: 4px;
+    letter-spacing: 1px;
+}
+
+/* ── Alerts list ──────────────────────────────────────────────── */
+.alerts {
+    list-style: none;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alerts li {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.tag.ok {
+    background: rgba(124, 255, 107, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(124, 255, 107, 0.4);
+}
+
+.tag.warn {
+    background: rgba(255, 214, 0, 0.12);
+    color: var(--yellow);
+    border: 1px solid rgba(255, 214, 0, 0.4);
+}
+
+.tag.crit {
+    background: rgba(255, 58, 58, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(255, 58, 58, 0.4);
+}
+
+/* ── Utilities ────────────────────────────────────────────────── */
+.mono {
+    font-family: var(--font-mono);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
+}

@@ -1,0 +1,28 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "cyberpunkterm.fullname" . }}
+  labels:
+    {{- include "cyberpunkterm.labels" . | nindent 4 }}
+rules:
+  # Allow exec into pods (required for /ws/terminal)
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create", "get"]
+
+  # Allow reading pod status, metadata, and logs (required for /ws/metrics)
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+
+  # Allow reading node info (used in metrics node field)
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list"]
+
+  # Allow reading metrics-server pod metrics (cpu/mem)
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list"]
+{{- end }}

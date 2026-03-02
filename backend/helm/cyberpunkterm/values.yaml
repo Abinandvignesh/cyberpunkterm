@@ -1,0 +1,87 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Default values for cyberpunkterm Helm chart.
+# Override with: helm install ... -f my-values.yaml
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Backend (cyberterminalbackend) ────────────────────────────────────────────
+backend:
+  image:
+    repository: cyberpunkterm/backend
+    tag: "0.1.0"
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  # Set to a kubeconfig secret name if you want to override in-cluster auth
+  kubeconfigSecret: ""
+
+  env:
+    METRICS_INTERVAL_SECONDS: "5"
+    # PORT is fixed at 8000 by the Dockerfile
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  # Liveness / readiness probe path
+  healthPath: /healthz
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# ── Toolbox StatefulSet ────────────────────────────────────────────────────────
+toolbox:
+  image:
+    repository: cyberpunkterm/toolbox
+    tag: "0.1.0"
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+  # Optional persistent home dir for toolbox users.
+  # Set enabled: true to create a PVC per pod via volumeClaimTemplates.
+  persistence:
+    enabled: false
+    storageClass: ""
+    size: 1Gi
+    accessMode: ReadWriteOnce
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# ── RBAC ──────────────────────────────────────────────────────────────────────
+rbac:
+  # Create ServiceAccount, ClusterRole, and ClusterRoleBinding for the backend
+  create: true
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# ── Global image pull secrets ──────────────────────────────────────────────────
+imagePullSecrets: []
+
+# ── Namespace override ──────────────────────────────────────────────────────────
+nameOverride: ""
+fullnameOverride: ""

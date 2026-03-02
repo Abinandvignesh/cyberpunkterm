@@ -1,0 +1,50 @@
+# ── OS / Editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Node / Frontend (Vite + React) ────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# ── Python / Backend ──────────────────────────────────────────────────────────
+backend/cyberterminalbackend/__pycache__/
+backend/cyberterminalbackend/*.pyc
+backend/cyberterminalbackend/*.pyo
+backend/cyberterminalbackend/.venv/
+backend/cyberterminalbackend/venv/
+backend/cyberterminalbackend/*.egg-info/
+backend/cyberterminalbackend/dist/
+backend/cyberterminalbackend/.env
+backend/cyberterminalbackend/.env.*
+!backend/cyberterminalbackend/.env.example
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+*.tar
+*.tgz
+
+# ── Helm ──────────────────────────────────────────────────────────────────────
+backend/helm/**/*.tgz
+backend/helm/**/charts/
+backend/helm/**/Chart.lock
+
+# ── Kubernetes / kubeconfig ───────────────────────────────────────────────────
+*.kubeconfig
+kubeconfig
+.kube/
+
+# ── Secrets / credentials — never commit these ────────────────────────────────
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/

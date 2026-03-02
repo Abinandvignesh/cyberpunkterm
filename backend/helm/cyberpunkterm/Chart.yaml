@@ -1,0 +1,17 @@
+apiVersion: v2
+name: cyberpunkterm
+description: CyberpunkTerm — Kubernetes web terminal with live pod metrics
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+
+keywords:
+  - terminal
+  - kubernetes
+  - kubectl
+  - xterm
+  - websocket
+
+maintainers:
+  - name: CyberpunkTerm
+    url: https://github.com/cyberpunkterm

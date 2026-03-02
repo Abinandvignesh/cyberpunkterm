@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: toolbox
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cyberpunkterm.labels" . | nindent 4 }}
+    {{- include "cyberpunkterm.toolbox.selectorLabels" . | nindent 4 }}
+spec:
+  serviceName: toolbox
+  replicas: {{ .Values.toolbox.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cyberpunkterm.toolbox.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cyberpunkterm.labels" . | nindent 8 }}
+        {{- include "cyberpunkterm.toolbox.selectorLabels" . | nindent 8 }}
+      {{- with .Values.toolbox.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: toolbox
+          image: "{{ .Values.toolbox.image.repository }}:{{ .Values.toolbox.image.tag }}"
+          imagePullPolicy: {{ .Values.toolbox.image.pullPolicy }}
+          command: ["/bin/bash", "--login"]
+          stdin: true
+          tty: true
+          {{- if .Values.toolbox.persistence.enabled }}
+          volumeMounts:
+            - name: home
+              mountPath: /home/toolbox
+          {{- end }}
+          resources:
+            {{- toYaml .Values.toolbox.resources | nindent 12 }}
+      {{- with .Values.toolbox.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.toolbox.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.toolbox.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.toolbox.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: home
+      spec:
+        accessModes: [{{ .Values.toolbox.persistence.accessMode | quote }}]
+        {{- if .Values.toolbox.persistence.storageClass }}
+        storageClassName: {{ .Values.toolbox.persistence.storageClass | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.toolbox.persistence.size }}
+  {{- end }}

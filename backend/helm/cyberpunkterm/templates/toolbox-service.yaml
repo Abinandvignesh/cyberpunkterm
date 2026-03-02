@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: toolbox
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cyberpunkterm.labels" . | nindent 4 }}
+    {{- include "cyberpunkterm.toolbox.selectorLabels" . | nindent 4 }}
+spec:
+  # Headless — lets the backend address individual pods (toolbox-0, toolbox-1, …)
+  # and is required by the StatefulSet for stable network identity.
+  clusterIP: None
+  selector:
+    {{- include "cyberpunkterm.toolbox.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: shell
+      port: 22
+      protocol: TCP
