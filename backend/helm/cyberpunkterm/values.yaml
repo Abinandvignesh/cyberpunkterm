@@ -69,6 +69,37 @@ toolbox:
   tolerations: []
   affinity: {}
 
+# ── Frontend (React/nginx) ────────────────────────────────────────────────────
+frontend:
+  image:
+    repository: cyberpunkterm/frontend
+    tag: "0.1.0"
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  service:
+    type: ClusterIP   # change to NodePort or LoadBalancer to expose externally
+    port: 80
+    # nodePort: 30080   # only used when type: NodePort
+
+  # WebSocket URL baked into the JS bundle at docker build time.
+  # Must match the backend Service DNS name inside the cluster.
+  wsBase: "ws://cyberpunkterm-backend:8000"
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
 # ── RBAC ──────────────────────────────────────────────────────────────────────
 rbac:
   # Create ServiceAccount, ClusterRole, and ClusterRoleBinding for the backend

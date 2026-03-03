@@ -4,7 +4,9 @@ import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
 import "./cyberpunk.css";
 
-const WS_BASE = "ws://localhost:8000";
+// In Docker: VITE_WS_BASE is baked in at build time (e.g. ws://cyberpunkterm-backend:8000)
+// Local dev:  falls back to ws://localhost:8000
+const WS_BASE = import.meta.env.VITE_WS_BASE ?? "ws://localhost:8000";
 
 function fmtBytes(bytes) {
   if (bytes == null) return "—";
