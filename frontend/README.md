@@ -1,16 +1,42 @@
-# React + Vite
+# CyberpunkTerm — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 + xterm.js + Vite — cyberpunk web terminal UI for the CyberpunkTerm Kubernetes exec console.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Running in Docker (recommended — deployed via Helm)
 
-## React Compiler
+The frontend is built as a static nginx image and deployed inside the cluster alongside the backend. See the root [README](../README.md) for the full deployment guide.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Build the image (minikube)
 
-## Expanding the ESLint configuration
+```bash
+# Point your Docker CLI at minikube's internal daemon
+eval $(minikube docker-env)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Build — bakes the backend WebSocket URL into the JS bundle
+docker build \
+  --build-arg VITE_WS_BASE=ws://cyberpunkterm-backend:8000 \
+  -t cyberpunkterm/frontend:0.1.0 .
+```
+
+---
+
+## Local Dev (no Docker)
+
+```bash
+npm install
+npm run dev
+# → http://localhost:5173
+# Requires kubectl port-forward svc/cyberpunkterm-backend 8000:8000
+```
+
+The `VITE_WS_BASE` env var defaults to `ws://localhost:8000` when not set, so local dev works out of the box.
+
+---
+
+## Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `VITE_WS_BASE` | `ws://localhost:8000` | WebSocket base URL for the backend |

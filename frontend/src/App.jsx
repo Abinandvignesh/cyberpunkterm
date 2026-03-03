@@ -4,9 +4,14 @@ import { FitAddon } from "@xterm/addon-fit";
 import "@xterm/xterm/css/xterm.css";
 import "./cyberpunk.css";
 
-// In Docker: VITE_WS_BASE is baked in at build time (e.g. ws://cyberpunkterm-backend:8000)
-// Local dev:  falls back to ws://localhost:8000
-const WS_BASE = import.meta.env.VITE_WS_BASE ?? "ws://localhost:8000";
+// In Docker: nginx proxies /ws/* → backend in-cluster.
+//   VITE_WS_BASE is empty → derive from the current page's host (same-origin).
+// Local dev: VITE_WS_BASE is unset → falls back to ws://localhost:8000.
+const WS_BASE = import.meta.env.VITE_WS_BASE !== undefined && import.meta.env.VITE_WS_BASE !== ""
+  ? import.meta.env.VITE_WS_BASE
+  : (typeof window !== "undefined"
+    ? `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`
+    : "ws://localhost:8000");
 
 function fmtBytes(bytes) {
   if (bytes == null) return "—";

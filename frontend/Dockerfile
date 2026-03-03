@@ -8,9 +8,9 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Copy source and build
-# VITE_WS_BASE is baked into the JS bundle at build time.
-# Pass it with: docker build --build-arg VITE_WS_BASE=ws://your-backend:8000 ...
-ARG VITE_WS_BASE=ws://localhost:8000
+# VITE_WS_BASE: empty = same-origin (browser → nginx → backend in-cluster via proxy_pass).
+# Override only if you expose the backend separately.
+ARG VITE_WS_BASE=
 ENV VITE_WS_BASE=$VITE_WS_BASE
 
 COPY . .
